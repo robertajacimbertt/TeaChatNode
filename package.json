@@ -1,0 +1,11 @@
+{
+  "name": "teachat",
+  "version": "1.0.0",
+  "description": "Projeto desenvolvido como projeto 2 para a matéria de desenvolvimento web ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Roberta Jacimbertt e Evelyn Fernandes",
+  "license": "ISC"
+}
