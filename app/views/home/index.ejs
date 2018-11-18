@@ -13,7 +13,6 @@
     	<script src="/scripts/index.js"></script>
 	</head>
 	<body>
-		<% materias.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0)); %>
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
 				<a class="navbar-item" href="">
@@ -119,7 +118,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/matematica.png"> <%= materias[0].nome %>
+								<img class="imagem-materia" src="/images/matematica.png"> Matemática
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Matemática!
@@ -138,7 +137,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/portugues.png"> <%= materias[1].nome %>
+								<img class="imagem-materia" src="/images/portugues.png"> Português
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Português!
@@ -157,7 +156,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/history.png"> <%= materias[2].nome %>
+								<img class="imagem-materia" src="/images/history.png"> História
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de <br> História!
@@ -176,7 +175,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/geografia.png">  <%= materias[3].nome %>
+								<img class="imagem-materia" src="/images/geografia.png">  Geografia
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Geografia!
@@ -198,7 +197,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/fisica.jpg">  <%= materias[4].nome %>
+								<img class="imagem-materia" src="/images/fisica.jpg">  Física
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de <br> Física!
@@ -217,7 +216,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/quimica.png"> <%= materias[5].nome %>
+								<img class="imagem-materia" src="/images/quimica.png"> Química
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Química!
@@ -236,7 +235,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/biologia.png">  <%= materias[6].nome %>
+								<img class="imagem-materia" src="/images/biologia.png"> Biologia
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Biologia!
@@ -255,7 +254,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/literatura.png"> <%= materias[7].nome %>
+								<img class="imagem-materia" src="/images/literatura.png"> Literatura
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Literatura!
@@ -277,7 +276,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/filosofia.png">  <%= materias[8].nome %>
+								<img class="imagem-materia" src="/images/filosofia.png"> Filosofia
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Filosofia!
@@ -296,7 +295,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/sociologia.png"> <%= materias[9].nome %>
+								<img class="imagem-materia" src="/images/sociologia.png"> Sociologia
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Sociologia!
@@ -315,7 +314,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/ingles.gif"> <%= materias[10].nome %>
+								<img class="imagem-materia" src="/images/ingles.gif"> Inglês
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de <br> Inglês!
@@ -334,7 +333,7 @@
 					<div class="card">
 						<div class="card-content">
 							<p class="title">
-								<img class="imagem-materia" src="/images/espanhol.png"> <%= materias[11].nome %>
+								<img class="imagem-materia" src="/images/espanhol.png"> Espanhol
 							</p>
 							<p class="subtitle">
 								Tire suas dúvidas de Espanhol!
@@ -364,22 +363,24 @@
 			<div class="modal-content">
 				<div class="columns">
 					<div class="column">
-						<p class="heading heading-bigger">Login</p>
-						<div class="field">
-							<div class="control">
-								<input class="input  is-login" type="text" placeholder="Email">
+						<form action="/aluno/autenticar" method="POST">
+							<p class="heading heading-bigger">Login</p>
+							<div class="field">
+								<div class="control">
+									<input class="input  is-login" name="email" type="text" placeholder="Email">
+								</div>
 							</div>
-						</div>
-						<div class="field">
-							<div class="control">
-								<input class="input   is-login" type="password" placeholder="Senha">
+							<div class="field">
+								<div class="control">
+									<input class="input   is-login" name="senha" type="password" placeholder="Senha">
+								</div>
 							</div>
-						</div>
-						<div class="field">
-							<div class="control">
-								<a class="input  button is-small is-fullwidth  is-botao-modal">Acessar</a>
+							<div class="field">
+								<div class="control">
+									<button type="submit" class="input  button is-small is-fullwidth  is-botao-modal">Acessar</button>
+								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 					<div class="column column-cadastro">
 						<form action="/aluno/cadastrar" method="post">
@@ -426,22 +427,24 @@
 			<div class="modal-content">
 				<div class="columns">
 					<div class="column">
-						<p class="heading heading-bigger">Login</p>
-						<div class="field">
-							<div class="control">
-								<input class="input  is-login" type="text" placeholder="Email">
+						<form action="/professor/autenticar" method="POST">
+							<p class="heading heading-bigger">Login</p>
+							<div class="field">
+								<div class="control">
+									<input class="input  is-login" name="email" type="text" placeholder="Email">
+								</div>
 							</div>
-						</div>
-						<div class="field">
-							<div class="control">
-								<input class="input   is-login" type="password" placeholder="Senha">
+							<div class="field">
+								<div class="control">
+									<input class="input   is-login" name="senha" type="password" placeholder="Senha">
+								</div>
 							</div>
-						</div>
-						<div class="field">
-							<div class="control">
-								<a class="input  button is-small is-fullwidth  is-botao-modal">Acessar</a>
+							<div class="field">
+								<div class="control">
+									<button type="submit" class="input  button is-small is-fullwidth  is-botao-modal">Acessar</button>
+								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 					<div class="column  column-cadastro">
 						<form action="/professor/cadastrar" method="post">

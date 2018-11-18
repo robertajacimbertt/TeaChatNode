@@ -23,4 +23,14 @@ module.exports = function(app) {
             res.render('chat/chatAluno', { erros: erros, aluno: aluno });
         });
     });
+
+    app.post('/aluno/autenticar', function(req, res) {
+        console.log("Cheguei na rota de autenticacao");
+        app.app.controllers.aluno.alunoAutenticar(app, req, res);
+    });
+
+    app.get('/chatAluno', function(req, res) {        
+        res.render('chat/chatAluno', {aluno:req.session.data});
+        // app.app.controllers.home.listarMaterias(app, req, res);
+    });
 }

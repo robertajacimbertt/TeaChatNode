@@ -23,4 +23,9 @@ module.exports = function(app) {
             res.redirect('/');
         });
     });
+
+    app.post('/professor/autenticar', function(req, res) {
+        console.log("Cheguei na rota de autenticacao professor");
+        app.app.controllers.professor.professorAutenticar(app, req, res);
+    });
 }
