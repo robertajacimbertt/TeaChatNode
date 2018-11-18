@@ -1,0 +1,29 @@
+.modal-content {
+    max-width: 650px !important;
+    padding: 50px !important;
+    background-color: white !important;
+}
+
+#cadastro-content {
+    border-left: gray solid 1px;
+}
+
+.is-botao-modal {
+    background-color: #4ABDAC;
+    color: white;
+    border: none;
+}
+
+.column-cadastro {
+    border-left: none;
+    border-top: #4ABDAC solid 2px;
+    margin-top: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+    .column-cadastro {
+        margin-top: 0px;
+        border-top: none;
+        border-left: #4ABDAC solid 2px;
+    }
+}

@@ -6,7 +6,7 @@ let connMySQL = function() {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'dsw'
+        database: 'teachat'
     });
 }
 
