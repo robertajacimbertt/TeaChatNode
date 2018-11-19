@@ -20,6 +20,7 @@
             <input type="text" name="message" placeholder="Mensagem">
             <button type="submit">Enviar</button>
         </form>
+        
         <script type="text/javascript">
             let socket = io("http://localhost:3000");
             console.log(socket);
@@ -54,6 +55,13 @@
 
                     socket.emit('sendMessage', messageObject);
                 };
+            });
+
+            socket.on("getUsers", data =>{
+                let html ='';
+                for(name of data){
+                    console.log("Nome --> ", name);
+                }
             });
         </script>
     </body>

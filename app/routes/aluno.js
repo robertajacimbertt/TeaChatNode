@@ -29,6 +29,10 @@ module.exports = function(app) {
         app.app.controllers.aluno.alunoAutenticar(app, req, res);
     });
 
+    app.get('/listarMaterias', function(req, res) {
+        app.app.controllers.aluno.listarMaterias(app, req, res);
+    });
+
     app.get('/chatAluno', function(req, res) {        
         res.render('chat/chatAluno', {aluno:req.session.data});
         // app.app.controllers.home.listarMaterias(app, req, res);
