@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Matérias disponíveis</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/css/listagemAluno.css" rel="stylesheet"> 
+    </head>
+    <body>
+        <% for (materia of materias) { %>
+            <span><%= materia.nome %></span>
+            <a href="/professoresDisponiveis/<%= materia.id_materia %>"> Chat </a> <br>
+        <% } %>
+    </body>
+</html>

@@ -1,7 +1,5 @@
 module.exports.alunoAutenticar = function(app, req, res) {
-    console.log("Cheguei no controller autenticar aluno");
     let aluno = req.body;
-    console.log(aluno);
     req.assert("email", "Email é obrigatório").notEmpty();
     req.assert("senha", "Senha é obrigatório").notEmpty();
 
@@ -38,12 +36,12 @@ module.exports.listarMaterias = function (app, req, res) {
 	let connection = app.config.dbConnection();
 	let materiasModel = new app.app.models.materiasDAO(connection);
 	materiasModel.listarMaterias(function(error, result){
-        console.log(result);
+        console.log("Todas as matérias -> ", result);
 		if(error){
             console.log("Erro");
             res.render('home/index', { erro: error, estudantes:[] });
 		}
-		res.render('listagem/aluno', {materias:result});
+		res.render('aluno/listagemMaterias', {materias:result});
 	});
 	
 }

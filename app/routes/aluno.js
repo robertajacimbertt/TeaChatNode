@@ -20,7 +20,7 @@ module.exports = function(app) {
                 console.log(error);
             }
             console.log("ALUNO SALVO");
-            res.render('chat/chatAluno', { erros: erros, aluno: aluno });
+            res.render('aluno/chatAluno', { erros: erros, aluno: aluno });
         });
     });
 
@@ -33,8 +33,15 @@ module.exports = function(app) {
         app.app.controllers.aluno.listarMaterias(app, req, res);
     });
 
+    app.get('/professoresDisponiveis/:id', function(req, res) {
+        console.log("req--> ", req.params.id);
+        console.log("res--> ", res.query);
+        // res.redirect('/'); //até aqui funciona
+        // app.app.controllers.aluno.listarMaterias(app, req, res);
+    });
+
     app.get('/chatAluno', function(req, res) {        
-        res.render('chat/chatAluno', {aluno:req.session.data});
+        res.render('aluno/chatAluno', {aluno:req.session.data});
         // app.app.controllers.home.listarMaterias(app, req, res);
     });
 }
