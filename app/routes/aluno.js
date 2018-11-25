@@ -20,4 +20,10 @@ module.exports = function(app) {
         // res.render('aluno/chatAluno', {aluno:req.session});
         app.app.controllers.aluno.createChat(app, req, res, id_professor);
     });
+
+    app.get("/getSessionData", function(req, res){
+        // sessionStore.get(req.session, function(err, data) {
+          res.send({ data:req.session});
+        // });
+      });
 }

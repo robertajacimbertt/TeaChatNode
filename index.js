@@ -8,20 +8,35 @@ let port = 3000;
 let server = app.listen(port);
 let io = require('socket.io').listen(server);
 
-let messages = [];
-let users = [];
-let connections = [];
+let messages = []; //talvez nao precise
+let users = []; // tbm nao 
+let connections = []; // sim
 
 io.on('connection', socket => { // ao conectar um novo socket
     connections.push(socket); // add  no array 
     console.log(`Socket conectado: ${socket}`);
+    let canal;
+    socket.on('newChannel', (canal) => {
+        console.log("Meu Canal = ", canal);
+        canal = canal;
+        socket.join(canal);
+    });
 
-    socket.emit('previousMessages', messages);
+    socket.emit('mensagensAnteriores', messages);
 
-    socket.on('sendMessage', data =>{
-        console.log("Send message -> ", data);
-        messages.push(data);
-        socket.broadcast.emit('receivedMessage', data);
+    socket.on('enviaMensagem', ({messageObject, canal}) => {
+        console.log("Send message -> ", canal,  messageObject);
+        messages.push(messageObject);
+        io.to(canal).emit('mensagemRecebida', messageObject);
+        // socket.broadcast.emit('mensagemRecebida', data);
+    });
+
+    socket.on('novoUsuario', (data, callback)=>{
+        console.log("new user - > ", data)
+        callback(true);
+        socket.userName = data.author;
+        users.push(socket.userName);
+        updateUsernames();
     });
 
     socket.on('disconnect', data => {
@@ -32,15 +47,7 @@ io.on('connection', socket => { // ao conectar um novo socket
         connections.splice(connections.indexOf(socket), 1);
     });
 
-    socket.on('newUser', (data, callback)=>{
-        console.log("new user - > ", data)
-        callback(true);
-        socket.userName = data.author;
-        users.push(socket.userName);
-        updateUsernames();
-    });
-
-    function updateUsernames() {
-        socket.emit("getUsers", users);
-    }
+    // function updateUsernames() {
+    //     socket.emit("getUsers", users);
+    // }
 });

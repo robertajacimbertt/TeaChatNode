@@ -47,12 +47,13 @@ html, body {
     bottom: 10px;
   }
   
-  .messages {
+  #messages {
     /* width: 600px;
     height: 400px;
     margin: 20px 0;
     border: 1px solid #ddd;
     padding: 20px; */
+    padding: 10px;
     border: red solid 1px;
     position: fixed;
     top: 60px;
@@ -60,3 +61,11 @@ html, body {
     width: 600px;
     height: 650px;
   }
+  .message{
+    padding: 4px;
+  }
+
+.aluno{
+  text-align: right;
+}
+  

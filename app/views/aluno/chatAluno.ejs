@@ -24,52 +24,108 @@
         </form>
         
         <script type="text/javascript">
-            console.log('aqui');
-            console.log(sessao);
-            let socket = io("http://localhost:3000"); //inicio um socket para o aluno
-            let id_aluno = sessao.dadosAluno.aluno.id_aluno;
-            let id_professor = sessao.dadosProfessor.id_professor;
+            /* ======================= pego os dados dos envolvidos, aluno e professor =====================  */
+            var sessao = '';
+            $.ajax({ type: "GET",   
+                url: "/getSessionData",   
+                async: false,
+                success : function(text){
+                    sessao = text;
+                }
+            });
 
-            console.log("Ids do aluno e professor: ", id_aluno, id_professor);
+            /* ======================= Variaveis necessárias =====================  */
+            let id_aluno = Number(sessao.data.dadosAluno.aluno.id_aluno);
+            let nome_aluno = sessao.data.dadosAluno.aluno.nome;
+            let id_professor = Number(sessao.data.dadosProfessor.id_professor);
+            let nome_professor = sessao.data.dadosProfessor.nomeProfessor;
+            let id_materia = Number(sessao.data.materiaSelecionada);
 
-            function renderMessage(message){
-                $('#messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
+            console.log("Ids necessarios: ", id_aluno, id_professor, id_materia);
+
+            /* ======================= pego os dados dos envolvidos, aluno e professor =====================  */
+            let socket = io("http://localhost:3000"); //iniciei um socket pro aluno - depois precisa de um pro professor
+
+            /* ======================= Funçoes uteis =====================  */
+            function renderMessage(mensagem){  
+                if( mensagem.emissor == 'aluno'){
+                    $('#messages').append('<div class="message aluno">' + mensagem.mensagem + '</div>');
+                } else {
+                    $('#messages').append('<div class="message professor"><strong>' + nome_professor + '</strong>: ' + mensagem.mensagem + '</div>');
+                }
             }
 
-            socket.on('previousMessages', function(messages){
-                for (message of messages){
-                    renderMessage(message);
+            /* ======================= Declaracao de canal =====================  */
+            let canal = '';
+            let dadosConversa = { id_aluno: id_aluno, id_professor: id_professor, id_materia: id_materia };
+            $.ajax({ type: "POST",   
+                url: "/conversa/getIdConversa",   
+                data: dadosConversa,
+                async: false,
+                success : function(text){
+                    canal = text[0].id_conversa;
                 }
             });
+            console.log("Canal: ",  canal);
+            if(canal){   // ainda nao é no enviar
+                socket.emit('newChannel', canal);
+                let id_conversa = canal;
+                let mensagensAntigas = [];
+                socket.on('mensagensAnteriores', function(mensagem){  
+                    $.ajax({ type: "POST",   
+                        url: "/conversa/getMensagens",   
+                        data: id_conversa,
+                        async: false,
+                        success : function(text){
+                            mensagensAntigas = text;
+                        }
+                    });
 
-            socket.on('receivedMessage', function (message){
-                renderMessage(message);
-            });
+                    mensagensAntigas.forEach(elemento => {
+                        renderMessage(elemento);
+                    });
 
-            $("#chat").submit(function(event){
-                event.preventDefault();
+                    // for (mensagem of mensagens){
+                    //     renderMessage(mensagem); // { aluno: '', mensagem: '' }
+                    // }   
 
-                var author = $();
-                var message = $('input[name=message]').val();
+                });
 
-                if(author.length && message.length){
-                    let messageObject = {
-                        author: author,
-                        message: message
+                socket.on('mensagemRecebida', function (mensagem){ 
+                    renderMessage(mensagem);
+                });
+
+                $("#chat").submit(function(event){
+                    event.preventDefault();
+
+                    let mensagem = $('input[name=message]').val();
+
+                    if(id_aluno && mensagem.length){
+                        let messageObject = {
+                            id_aluno: id_aluno,
+                            nome_aluno: nome_aluno,
+                            id_professor: id_professor,
+                            nome_professor: nome_professor,
+                            mensagem: mensagem
+                        };
+                        renderMessage(messageObject);
+                        socket.emit('enviaMensagem', {messageObject, canal});
                     };
+                });
+            }  else {
+                console.log("Deu erro de alguma coisa");
+            }
 
-                    renderMessage(messageObject);
+           
 
-                    socket.emit('sendMessage', messageObject);
-                };
-            });
+            
 
-            socket.on("getUsers", data =>{
-                let html ='';
-                for(name of data){
-                    console.log("Nome --> ", name);
-                }
-            });
+            // socket.on("getUsers", data =>{
+            //     let html ='';
+            //     for(name of data){
+            //         console.log("Nome --> ", name);
+            //     }
+            // });
         </script>
     </body>
 </html>
