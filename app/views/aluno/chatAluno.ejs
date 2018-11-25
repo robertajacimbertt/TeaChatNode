@@ -12,8 +12,10 @@
         <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
     </head>
     <body>
+        <p><% sessao %></p> 
+        <% console.log(sessao); %>
         <form id="chat">
-            <input type="text" name="username" placeholder="Nome">
+            <p>Professor(a): <%= sessao.dadosProfessor.nomeProfessor %></p>
             <div id="messages">
                 
             </div>
@@ -22,8 +24,13 @@
         </form>
         
         <script type="text/javascript">
-            let socket = io("http://localhost:3000");
-            console.log(socket);
+            console.log('aqui');
+            console.log(sessao);
+            let socket = io("http://localhost:3000"); //inicio um socket para o aluno
+            let id_aluno = sessao.dadosAluno.aluno.id_aluno;
+            let id_professor = sessao.dadosProfessor.id_professor;
+
+            console.log("Ids do aluno e professor: ", id_aluno, id_professor);
 
             function renderMessage(message){
                 $('#messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
@@ -42,7 +49,7 @@
             $("#chat").submit(function(event){
                 event.preventDefault();
 
-                var author = $('input[name=username]').val();
+                var author = $();
                 var message = $('input[name=message]').val();
 
                 if(author.length && message.length){

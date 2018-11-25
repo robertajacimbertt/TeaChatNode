@@ -9,7 +9,6 @@ html, body {
   }
   
   #chat {
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,9 +18,18 @@ html, body {
   input {
     width: 600px;
     border: 1px solid #ddd;
-    height: 50px;
+    max-height: 200px;
+    min-height: 50px;
     padding: 0 20px;
     font-size: 14px;
+    position: fixed;
+    bottom: 60px;
+  }
+
+  p{
+    font-size: 12pt;
+    position: fixed;
+    top: 20px;
   }
   
   button {
@@ -29,17 +37,26 @@ html, body {
     height: 50px;
     font-size: 14px;
     background: #069;
+    border: #069 solid 1px;
     text-align: center;
     line-height: 50px;
     font-weight: bold;
     color: #FFF;
     margin-top: 10px;
+    position: fixed;
+    bottom: 10px;
   }
   
   .messages {
-    width: 600px;
+    /* width: 600px;
     height: 400px;
     margin: 20px 0;
     border: 1px solid #ddd;
-    padding: 20px;
+    padding: 20px; */
+    border: red solid 1px;
+    position: fixed;
+    top: 60px;
+    overflow: scroll;
+    width: 600px;
+    height: 650px;
   }

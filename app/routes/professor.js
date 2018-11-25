@@ -16,16 +16,13 @@ module.exports = function(app) {
 
         professorModel.storeProfessor(professor, function(error, result) {
             if (error) {
-                console.log("Erro");
                 console.log(error);
             }
-            console.log("PROFESSOR SALVO");
             res.redirect('/');
         });
     });
 
     app.post('/professor/autenticar', function(req, res) {
-        console.log("Cheguei na rota de autenticacao professor");
         app.app.controllers.professor.professorAutenticar(app, req, res);
     });
 }

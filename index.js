@@ -2,18 +2,18 @@ let app = require('./config/server.js');
 
 let port = 3000;
 
-let http = require('http').Server(app);
-var io = require('socket.io')(http);
+// let http = require('http').Server(app);
+// var io = require('socket.io')(http);
 
-var server = app.listen(port)
-var io = require('socket.io').listen(server);
+let server = app.listen(port);
+let io = require('socket.io').listen(server);
 
 let messages = [];
 let users = [];
 let connections = [];
 
-io.on('connection', socket => {
-    connections.push(socket);
+io.on('connection', socket => { // ao conectar um novo socket
+    connections.push(socket); // add  no array 
     console.log(`Socket conectado: ${socket}`);
 
     socket.emit('previousMessages', messages);
