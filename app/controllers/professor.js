@@ -1,6 +1,6 @@
 module.exports.professorAutenticar = function(app, req, res) {
     let professor = req.body;
-    console.log(professor);
+    console.log("Professor cad: ", professor);
     // req.assert("email", "Email é obrigatório").notEmpty();
     // req.assert("senha", "Senha é obrigatório").notEmpty();
 
@@ -14,13 +14,16 @@ module.exports.professorAutenticar = function(app, req, res) {
     let professorModel = new app.app.models.professorDAO(connection);
     professorModel.professorAutenticar(professor, function(error, result) {
         if (error) {
-            res.redirect('/');
+            res.redirect('/'); //trocar por res.send para mostrar as respostas
             return;
         } else if (result.length > 0) {
+            console.log("Resultado ");
+            console.log(result);
             req.session.professorAutorizado = true;
-            req.session.dadosProfessor =  { erros: erros, professor: professor };
-            res.redirect('/chatProfessor');
-            // res.render('chat/chatProfessor', { erros: erros, professor: professor });
+            // req.session.idAluno = result[0].id_aluno;
+            req.session.dadosProfessor =  { erros: erros, professor: result[0] };
+            res.redirect('/listarMateriasLecionadas/' + result[0].id_professor);
+            // res.render('chat/chatAluno', { erros: erros, aluno: aluno });
             return;
         } else {
             res.send("Usuario ou senha inexistente");
@@ -29,7 +32,37 @@ module.exports.professorAutenticar = function(app, req, res) {
     });
 }
 
-module.exports.professoresNaMateria = function(app, req, res){
+module.exports.professorCadastrar = function (app, req, res) {
+    let professor = req.body;
+    console.log("Professor login: ", professor);
+    // req.assert("nome", "Nome é obrigatório").notEmpty();
+    // req.assert("email", "Usuário é obrigatório").notEmpty();
+    // req.assert("senha", "Senha é obrigatório").notEmpty();
+
+    var erros = req.validationErrors();
+    if (erros) {
+        res.render('home/index', { erros: erros, professor: professor });
+        return;
+    }
+
+    let connection = app.config.dbConnection();
+    let professorModel = new app.app.models.professorDAO(connection);
+
+    professorModel.storeProfessor(professor, function(error, result) {
+        if (error) {
+            res.redirect('/');
+            return;
+        } else  {
+            console.log(result);
+            req.session.professorAutorizado = true;
+            req.session.dadosProfessor =  { erros: erros, professor: professor };
+            res.redirect('/listarMateriasLecionadas');
+            return;
+        }
+    });           
+}
+
+module.exports.professoresNaMateria = function(app, req, res){ 
     let id_materia = req.params.id;
     // req.assert("email", "Email é obrigatório").notEmpty();
     // req.assert("senha", "Senha é obrigatório").notEmpty();
@@ -57,4 +90,27 @@ module.exports.professoresNaMateria = function(app, req, res){
             req.session.autorizado = false;
         }
     });
+}
+
+module.exports.listarMateriasLecionadas = function (app, req, res) {
+    let id_professor = req.params.id_professor;
+    console.log("Controller professor, listarMateriasLecionadas", id_professor);
+	let connection = app.config.dbConnection();
+	let materiasModel = new app.app.models.materiasDAO(connection);
+	materiasModel.listarMateriasLecionadas(id_professor, function(error, result){
+		if(error){
+            res.render('home/index', { erro: error, estudantes:[] });
+        }
+        console.log(result);
+		res.render('professor/listagemMaterias', {materias:result});
+	});
+	
+}
+
+module.exports.createChat = function (app, req, res) {
+    console.log("Chega no controller create chat", req.params.id_conversa);
+    console.log(req.session);
+    let chatAlunoSelecionado = req.session.alunosComChat.find(item => item.id_conversa === Number(req.params.id_conversa));
+    req.session.dadosDoChatAlunoSelecionado = chatAlunoSelecionado;
+    res.render('professor/chatProfessor', {sessao:req.session});
 }

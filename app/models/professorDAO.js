@@ -5,10 +5,9 @@ function ProfessorDAO(connection) {
 }
 
 ProfessorDAO.prototype.storeProfessor = function(professor, callback) {
-    // let senhaCriptografada = crypto.createHash("md5").update(professor.password).digest("hex");
-    // professor.password = senhaCriptografada;
+    // let senhaCriptografada = crypto.createHash("md5").update(aluno.password).digest("hex");
+    // aluno.password = senhaCriptografada;
 
-    console.log(professor);
     this._conn.query('INSERT INTO professores SET ?', professor, callback);
 }
 
@@ -23,3 +22,10 @@ ProfessorDAO.prototype.professorAutenticar = function(professor, callback) {
 module.exports = function() {
     return ProfessorDAO;
 }
+
+
+
+
+
+
+

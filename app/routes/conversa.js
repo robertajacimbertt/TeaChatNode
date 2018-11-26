@@ -11,5 +11,9 @@ module.exports = function(app) {
 
     app.post('/conversa/inserirMensagem', function(req, res) {
         app.app.controllers.conversa.inserirNovaMensagem(app, req, res);
+    }); 
+
+    app.get('/buscarChats/:id_materia', function(req, res) {
+        app.app.controllers.conversa.buscarChatsComAlunos(app, req, res);
     });
 }

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Há</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+        <script src="/scripts/jquery-3.3.1.min.js"></script>
+        <link rel="stylesheet" href="/css/chatAluno.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+    </head>
+    <body>
+        <p><% sessao %></p> 
+        <% console.log(sessao); %>
+        <form id="chat">
+            <p>Professor(a): <%= sessao.dadosProfessor.professor.nomeProfessor %></p>
+            <div id="messages">
+                
+            </div>
+            <input type="text" name="message" placeholder="Mensagem">
+            <button type="submit">Enviar</button>
+        </form>
+        
+        <script type="text/javascript">
+            /* ======================= pego os dados dos envolvidos, aluno e professor =====================  */
+            var sessao = '';
+            $.ajax({ type: "GET",   
+                url: "/getSessionData",   
+                async: false,
+                success : function(text){
+                    sessao = text;
+                }
+            });
+
+            /* ======================= Variaveis necessárias =====================  */
+            let id_aluno = Number(sessao.data.dadosAluno.aluno.id_aluno);
+            let nome_aluno = sessao.data.dadosAluno.aluno.nome;
+            let id_professor = Number(sessao.data.dadosProfessor.id_professor);
+            let nome_professor = sessao.data.dadosProfessor.nomeProfessor;
+            let id_materia = Number(sessao.data.materiaSelecionada);
+
+            console.log("Ids necessarios: ", id_aluno, id_professor, id_materia);
+
+            /* ======================= pego os dados dos envolvidos, aluno e professor =====================  */
+            let socket = io("http://localhost:3000"); //iniciei um socket pro aluno - depois precisa de um pro professor
+
+            /* ======================= Funçoes uteis =====================  */
+            function renderMessage(mensagem){  
+                if( mensagem.emissor == 'aluno'){
+                    $('#messages').append('<div class="message aluno">' + mensagem.mensagem + '</div>');
+                } else {
+                    $('#messages').append('<div class="message professor"><strong>' + nome_professor + '</strong>: ' + mensagem.mensagem + '</div>');
+                }
+            }
+
+            /* ======================= Declaracao de canal =====================  */
+            let canal = '';
+            let dadosConversa = { id_aluno: id_aluno, id_professor: id_professor, id_materia: id_materia };
+            $.ajax({ type: "POST",   
+                url: "/conversa/getIdConversa",   
+                data: dadosConversa,
+                async: false,
+                success : function(text){
+                    canal = text[0].id_conversa;
+                }
+            });
+            console.log("Canal: ",  canal);
+            if(canal){   // ainda nao é no enviar
+                socket.emit('newChannel', canal);
+                let id_conversa = canal;
+                let mensagensAntigas = [];
+                socket.on('mensagensAnteriores', function(mensagem){  
+                    $.ajax({ type: "GET",   
+                        url: "/conversa/getMensagens/"+id_conversa,   
+                        // data: id_conversa,
+                        async: false,
+                        success : function(text){
+                            mensagensAntigas = text;
+                        }
+                    });
+
+                    mensagensAntigas.forEach(elemento => {
+                        renderMessage(elemento);
+                    }); 
+                });
+
+                socket.on('mensagemRecebida', function (mensagem){  // quando o aluno receber do professor // é a que eu mesma mando
+
+                    renderMessage(mensagem);
+                });
+
+                $("#chat").submit(function(event){
+                    event.preventDefault();
+
+                    let mensagem = $('input[name=message]').val();
+
+                    if(id_conversa && mensagem.length){
+                        let messageObject = { // limpar esse objeto depois
+                            id_aluno: id_aluno,
+                            nome_aluno: nome_aluno,
+                            id_professor: id_professor,
+                            nome_professor: nome_professor,
+                            id_conversa: id_conversa,
+                            mensagem: mensagem,
+                            emissor: "aluno"
+                        };
+                        //salvo no banco 
+                        $.ajax({ type: "POST",   
+                            url: "/conversa/inserirMensagem",   
+                            data: messageObject,
+                            async: false,
+                            success : function(text){
+                                console.log("TEXTO");
+                                console.log(text);
+                            }
+                        });
+
+                        // renderMessage(messageObject);
+                        socket.emit('enviaMensagem', {messageObject, canal});
+                    };
+                });
+            }  else {
+                console.log("Deu erro de alguma coisa");
+            }
+        </script>
+    </body>
+</html>

@@ -1,28 +1,22 @@
 module.exports = function(app) {
     app.post('/professor/cadastrar', function(req, res) {
-        let professor = req.body;
-        req.assert("nome", "Nome é obrigatório").notEmpty();
-        req.assert("email", "Usuário é obrigatório").notEmpty();
-        req.assert("senha", "Senha é obrigatório").notEmpty();
-
-        var erros = req.validationErrors();
-        if (erros) {
-            res.render('home/index', { erros: erros, professor: professor });
-            return;
-        }
-
-        let connection = app.config.dbConnection();
-        let professorModel = new app.app.models.professorDAO(connection);
-
-        professorModel.storeProfessor(professor, function(error, result) {
-            if (error) {
-                console.log(error);
-            }
-            res.redirect('/');
-        });
+        app.app.controllers.professor.professorCadastrar(app, req, res);
     });
 
     app.post('/professor/autenticar', function(req, res) {
         app.app.controllers.professor.professorAutenticar(app, req, res);
     });
+
+    app.get('/listarMateriasLecionadas/:id_professor', function(req, res) {
+        console.log("IDO DO prof na rota: ");
+        console.log(req.params.id_professor);
+        app.app.controllers.professor.listarMateriasLecionadas(app, req, res);
+    });
+
+    app.get('/chatProfessor/:id_conversa', function(req, res) { 
+        // res.render('aluno/chatAluno', {aluno:req.session});
+        app.app.controllers.professor.createChat(app, req, res);
+    });
 }
+
+// precisa adicionar as materias que o professor da aula

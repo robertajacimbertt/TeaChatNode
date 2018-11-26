@@ -15,7 +15,7 @@ AlunoDAO.prototype.alunoAutenticar = function(aluno, callback) {
     // let senhaCriptografada = crypto.createHash("md5").update(usuario.password).digest("hex");
     // usuario.password = senhaCriptografada;
 
-    let sql = "SELECT * FROM alunos WHERE email = '" + aluno.email + "' AND senha = '" + aluno.senha + "'";
+    let sql = "SELECT * FROM alunos WHERE email = '" + aluno.email + "' AND senha = '" + aluno.senha + "';";
     this._conn.query(sql, callback);
 }
 
