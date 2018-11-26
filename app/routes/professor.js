@@ -8,8 +8,6 @@ module.exports = function(app) {
     });
 
     app.get('/listarMateriasLecionadas/:id_professor', function(req, res) {
-        console.log("IDO DO prof na rota: ");
-        console.log(req.params.id_professor);
         app.app.controllers.professor.listarMateriasLecionadas(app, req, res);
     });
 

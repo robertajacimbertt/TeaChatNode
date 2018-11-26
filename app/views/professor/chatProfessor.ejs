@@ -7,7 +7,7 @@
         <link href="css/style.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
         <script src="/scripts/jquery-3.3.1.min.js"></script>
-        <link rel="stylesheet" href="/css/chatAluno.css">
+        <link rel="stylesheet" href="/css/chatProfessor.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
         <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
     </head>
@@ -15,7 +15,7 @@
         <p><% sessao %></p> 
         <% console.log(sessao); %>
         <form id="chat">
-            <p>Professor(a): <%= sessao.dadosProfessor.professor.nomeProfessor %></p>
+            <p>Aluno(a): <%= sessao.dadosDoChatAlunoSelecionado.nomeAluno %></p>
             <div id="messages">
                 
             </div>
@@ -30,16 +30,18 @@
                 url: "/getSessionData",   
                 async: false,
                 success : function(text){
-                    sessao = text;
+                    console.log("dados da sessao");
+                    console.log(text)
+                    sessao = text.data;
                 }
             });
 
             /* ======================= Variaveis necessárias =====================  */
-            let id_aluno = Number(sessao.data.dadosAluno.aluno.id_aluno);
-            let nome_aluno = sessao.data.dadosAluno.aluno.nome;
-            let id_professor = Number(sessao.data.dadosProfessor.id_professor);
-            let nome_professor = sessao.data.dadosProfessor.nomeProfessor;
-            let id_materia = Number(sessao.data.materiaSelecionada);
+            let id_aluno = Number(sessao.dadosDoChatAlunoSelecionado.id_aluno);
+            let nome_aluno = sessao.dadosDoChatAlunoSelecionado.nomeAluno;
+            let id_professor = Number(sessao.dadosProfessor.professor.id_professor);
+            let nome_professor = sessao.dadosProfessor.professor.nome;
+            let id_materia = Number(sessao.materiaSelecionada);
 
             console.log("Ids necessarios: ", id_aluno, id_professor, id_materia);
 
@@ -48,10 +50,10 @@
 
             /* ======================= Funçoes uteis =====================  */
             function renderMessage(mensagem){  
-                if( mensagem.emissor == 'aluno'){
-                    $('#messages').append('<div class="message aluno">' + mensagem.mensagem + '</div>');
+                if( mensagem.emissor == 'professor'){
+                    $('#messages').append('<div class="message professor">' + mensagem.mensagem + '</div>');
                 } else {
-                    $('#messages').append('<div class="message professor"><strong>' + nome_professor + '</strong>: ' + mensagem.mensagem + '</div>');
+                    $('#messages').append('<div class="message aluno"><strong>' + nome_aluno + '</strong>: ' + mensagem.mensagem + '</div>');
                 }
             }
 
@@ -104,7 +106,7 @@
                             nome_professor: nome_professor,
                             id_conversa: id_conversa,
                             mensagem: mensagem,
-                            emissor: "aluno"
+                            emissor: "professor"
                         };
                         //salvo no banco 
                         $.ajax({ type: "POST",   

@@ -83,7 +83,6 @@ module.exports.buscarChatsComAlunos = function(app, req, res) {
     let id_materia = req.params.id_materia; 
     let id_professor = req.session.dadosProfessor.professor.id_professor;
     let conversa = {id_materia: Number(id_materia), id_professor: Number(id_professor)};
-    console.log("Conversa no controleler", conversa);
     // let erros = req.validationErrors();
     // if (erros) {
     //     res.send(erros);
@@ -93,7 +92,6 @@ module.exports.buscarChatsComAlunos = function(app, req, res) {
     let connection = app.config.dbConnection();
     let conversaModel = new app.app.models.conversaDAO(connection);
     conversaModel.selectChatsComAlunos(conversa, function(error, result) { 
-        console.log(result);
         if (error) {
             res.send(error);
             return;

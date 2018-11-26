@@ -16,7 +16,6 @@ module.exports.alunoAutenticar = function(app, req, res) {
             res.redirect('/');
             return;
         } else if (result.length > 0) {
-            console.log(result);
             req.session.alunoAutorizado = true;
             // req.session.idAluno = result[0].id_aluno;
             req.session.dadosAluno =  { erros: erros, aluno: result[0] };
@@ -50,7 +49,6 @@ module.exports.alunoCadastrar = function (app, req, res) {
             res.redirect('/');
             return;
         } else  {
-            console.log(result);
             req.session.alunoAutorizado = true;
             req.session.dadosAluno =  { erros: erros, aluno: aluno };
             res.redirect('/listarMaterias');

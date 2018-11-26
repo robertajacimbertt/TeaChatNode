@@ -18,15 +18,12 @@ ConversaDAO.prototype.selectMensagens = function(id_conversa, callback) {
 }
 
 ConversaDAO.prototype.insertMensagem = function(conversa, callback) { 
-    console.log("Conversa no DAO: ", conversa);
     let sql = "INSERT INTO mensagens (id_conversa, mensagem, emissor) VALUES (" + conversa.id_conversa + ", '" + conversa.mensagem + "', '" + conversa.emissor + "');" ;
     this._conn.query(sql, callback);
 }
 
 ConversaDAO.prototype.selectChatsComAlunos = function(conversa, callback) { 
-    console.log("Conversa ", conversa);
     let sql = "SELECT c.id_conversa, c.id_aluno, a.nome AS nomeAluno FROM conversas c INNER JOIN alunos a ON c.id_aluno = a.id_aluno WHERE c.id_professor = "  + conversa.id_professor + " AND c.id_materia = " + conversa.id_materia + ";";
-    console.log(sql);
     this._conn.query(sql, callback);
 }
 
