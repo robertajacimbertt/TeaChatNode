@@ -3,7 +3,7 @@ function materiasDAO(connection) {
 }
 
 materiasDAO.prototype.listarMaterias = function(callback) {
-    let sql = 'select * from materias';
+    let sql = 'SELECT * FROM materias';
     this._conn.query(sql, callback);
 }
 

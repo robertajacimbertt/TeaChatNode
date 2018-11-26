@@ -9,14 +9,14 @@ ProfessorDAO.prototype.storeProfessor = function(professor, callback) {
     // professor.password = senhaCriptografada;
 
     console.log(professor);
-    this._conn.query('insert into professores set ?', professor, callback);
+    this._conn.query('INSERT INTO professores SET ?', professor, callback);
 }
 
 ProfessorDAO.prototype.professorAutenticar = function(professor, callback) {
     // let senhaCriptografada = crypto.createHash("md5").update(usuario.password).digest("hex");
     // usuario.password = senhaCriptografada;
 
-    let sql = "select * from professores where email = '" + professor.email + "' and senha = '" + professor.senha + "'";
+    let sql = "SELECT * FROM professores WHERE email = '" + professor.email + "' AND senha = '" + professor.senha + "'";
     this._conn.query(sql, callback);
 }
 

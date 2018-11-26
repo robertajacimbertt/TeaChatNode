@@ -72,9 +72,9 @@
                 let id_conversa = canal;
                 let mensagensAntigas = [];
                 socket.on('mensagensAnteriores', function(mensagem){  
-                    $.ajax({ type: "POST",   
-                        url: "/conversa/getMensagens",   
-                        data: id_conversa,
+                    $.ajax({ type: "GET",   
+                        url: "/conversa/getMensagens/"+id_conversa,   
+                        // data: id_conversa,
                         async: false,
                         success : function(text){
                             mensagensAntigas = text;
@@ -83,15 +83,11 @@
 
                     mensagensAntigas.forEach(elemento => {
                         renderMessage(elemento);
-                    });
-
-                    // for (mensagem of mensagens){
-                    //     renderMessage(mensagem); // { aluno: '', mensagem: '' }
-                    // }   
-
+                    }); 
                 });
 
-                socket.on('mensagemRecebida', function (mensagem){ 
+                socket.on('mensagemRecebida', function (mensagem){  // quando o aluno receber do professor // é a que eu mesma mando
+
                     renderMessage(mensagem);
                 });
 
@@ -100,32 +96,34 @@
 
                     let mensagem = $('input[name=message]').val();
 
-                    if(id_aluno && mensagem.length){
-                        let messageObject = {
+                    if(id_conversa && mensagem.length){
+                        let messageObject = { // limpar esse objeto depois
                             id_aluno: id_aluno,
                             nome_aluno: nome_aluno,
                             id_professor: id_professor,
                             nome_professor: nome_professor,
-                            mensagem: mensagem
+                            id_conversa: id_conversa,
+                            mensagem: mensagem,
+                            emissor: "aluno"
                         };
-                        renderMessage(messageObject);
+                        //salvo no banco 
+                        $.ajax({ type: "POST",   
+                            url: "/conversa/inserirMensagem",   
+                            data: messageObject,
+                            async: false,
+                            success : function(text){
+                                console.log("TEXTO");
+                                console.log(text);
+                            }
+                        });
+
+                        // renderMessage(messageObject);
                         socket.emit('enviaMensagem', {messageObject, canal});
                     };
                 });
             }  else {
                 console.log("Deu erro de alguma coisa");
             }
-
-           
-
-            
-
-            // socket.on("getUsers", data =>{
-            //     let html ='';
-            //     for(name of data){
-            //         console.log("Nome --> ", name);
-            //     }
-            // });
         </script>
     </body>
 </html>

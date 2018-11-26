@@ -26,9 +26,8 @@ io.on('connection', socket => { // ao conectar um novo socket
 
     socket.on('enviaMensagem', ({messageObject, canal}) => {
         console.log("Send message -> ", canal,  messageObject);
-        messages.push(messageObject);
+        // messages.push(messageObject);
         io.to(canal).emit('mensagemRecebida', messageObject);
-        // socket.broadcast.emit('mensagemRecebida', data);
     });
 
     socket.on('novoUsuario', (data, callback)=>{

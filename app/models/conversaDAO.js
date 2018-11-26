@@ -4,17 +4,22 @@ function ConversaDAO(connection) {
 }
 
 ConversaDAO.prototype.insertConversa = function(conversa, callback) { // id_professor, id_aluno, id_materia
-    this._conn.query('insert into conversas set ?', conversa, callback);
+    this._conn.query('INSERT INTO conversas SET ?', conversa, callback);
 }
 
 ConversaDAO.prototype.selectConversa = function(conversa, callback) { 
-    let sql = "select id_conversa from conversas where id_aluno = " + conversa.id_aluno + " and id_professor = " + conversa.id_professor + " and id_materia = " + conversa.id_materia ;
+    let sql = "SELECT id_conversa FROM conversas WHERE id_aluno = " + conversa.id_aluno + " AND id_professor = " + conversa.id_professor + " AND id_materia = " + conversa.id_materia ;
     this._conn.query(sql, callback);
 }
 
 ConversaDAO.prototype.selectMensagens = function(id_conversa, callback) { 
-    console.log("ID da Conversa no DAO: ", id_conversa);
     let sql = "SELECT * FROM mensagens WHERE id_conversa = " + id_conversa ;
+    this._conn.query(sql, callback);
+}
+
+ConversaDAO.prototype.insertMensagem = function(conversa, callback) { 
+    console.log("Conversa no DAO: ", conversa);
+    let sql = "INSERT INTO mensagens (id_conversa, mensagem, emissor) VALUES (" + conversa.id_conversa + ", '" + conversa.mensagem + "', '" + conversa.emissor + "')" ;
     this._conn.query(sql, callback);
 }
 
