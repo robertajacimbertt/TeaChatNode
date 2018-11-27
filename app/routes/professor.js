@@ -8,12 +8,19 @@ module.exports = function(app) {
     });
 
     app.get('/listarMateriasLecionadas/:id_professor', function(req, res) {
-        app.app.controllers.professor.listarMateriasLecionadas(app, req, res);
+        if(req.session.professorAutorizado === true){
+            app.app.controllers.professor.listarMateriasLecionadas(app, req, res);
+        } else {
+            res.render('erro/autorizacao');
+        }
     });
 
     app.get('/chatProfessor/:id_conversa', function(req, res) { 
-        // res.render('aluno/chatAluno', {aluno:req.session});
-        app.app.controllers.professor.createChat(app, req, res);
+        if(req.session.professorAutorizado === true){
+            app.app.controllers.professor.createChat(app, req, res);
+        } else {
+            res.render('erro/autorizacao');
+        }
     });
 }
 
