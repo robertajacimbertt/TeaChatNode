@@ -49,7 +49,8 @@ module.exports.alunoCadastrar = function (app, req, res) {
         } else  {
             req.session.alunoAutorizado = true;
             req.session.dadosAluno =  { erros: erros, aluno: aluno };
-            res.redirect('/listarMaterias');
+            // res.redirect('/listarMaterias');
+            res.redirect('/');
             return;
         }
     });           
