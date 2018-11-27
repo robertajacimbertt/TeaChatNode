@@ -46,7 +46,8 @@ module.exports.professorCadastrar = function (app, req, res) {
                         res.redirect('/');
                         return;
                      } else {
-                        res.redirect('/listarMateriasLecionadas/' + Number(professorMaterias.id_professor));
+                         res.redirect("/");
+                        // res.redirect('/listarMateriasLecionadas/' + Number(professorMaterias.id_professor));
                          return;
                      }  
                  });             
