@@ -5,3 +5,16 @@
 .separador{
     max-height: 170px;
 }
+.notification{
+    position: fixed;
+    bottom: 0px;
+    max-width: 50%;
+    right: 0px;
+}
+.invisible{
+    visibility: hidden;
+}
+
+.visible{
+    visibility: visible;
+}

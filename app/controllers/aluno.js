@@ -17,10 +17,8 @@ module.exports.alunoAutenticar = function(app, req, res) {
             return;
         } else if (result.length > 0) {
             req.session.alunoAutorizado = true;
-            // req.session.idAluno = result[0].id_aluno;
             req.session.dadosAluno =  { erros: erros, aluno: result[0] };
             res.redirect('/listarMaterias');
-            // res.render('chat/chatAluno', { erros: erros, aluno: aluno });
             return;
         } else {
             res.send("Usuario ou senha inexistente");
@@ -62,7 +60,6 @@ module.exports.listarMaterias = function (app, req, res) {
 	let materiasModel = new app.app.models.materiasDAO(connection);
 	materiasModel.listarMaterias(function(error, result){
 		if(error){
-            console.log("Erro");
             res.render('home/index', { erro: error, estudantes:[] });
 		}
 		res.render('aluno/listagemMaterias', {materias:result});
