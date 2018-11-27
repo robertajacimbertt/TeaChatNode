@@ -8,22 +8,31 @@ module.exports = function(app) {
     });
 
     app.get('/listarMaterias', function(req, res) {
-        app.app.controllers.aluno.listarMaterias(app, req, res);
+        if(req.session.alunoAutorizado === true){
+            app.app.controllers.aluno.listarMaterias(app, req, res);
+        } else {
+            res.render('erro/autorizacao');
+        }
     });
 
     app.get('/buscarProfessoresDisponiveis/:id', function(req, res) {
-        app.app.controllers.professor.professoresNaMateria(app, req, res);
+        if(req.session.alunoAutorizado === true){
+            app.app.controllers.professor.professoresNaMateria(app, req, res);
+        } else {
+            res.render('erro/autorizacao');
+        }
     });
 
-    app.get('/chatAluno/:id', function(req, res) {  
-        let id_professor = req.params.id;
-        // res.render('aluno/chatAluno', {aluno:req.session});
-        app.app.controllers.aluno.createChat(app, req, res, id_professor);
+    app.get('/chatAluno/:id', function(req, res) { 
+        if(req.session.alunoAutorizado === true){ 
+            let id_professor = req.params.id;
+            app.app.controllers.aluno.createChat(app, req, res, id_professor);
+        } else {
+            res.render('erro/autorizacao');
+        }
     });
 
     app.get("/getSessionData", function(req, res){
-        // sessionStore.get(req.session, function(err, data) {
-          res.send({ data:req.session});
-        // });
-      });
+        res.send({ data:req.session});
+  });
 }
