@@ -116,14 +116,21 @@ module.exports.apagarChat = function(app, req, res) {
 
     let connection = app.config.dbConnection();
     let conversaModel = new app.app.models.conversaDAO(connection);
-    conversaModel.deleteChat(id_conversa, function(error, result) { 
+
+    conversaModel.deleteMensagem(id_conversa, function(error, result) { 
         if (error) {
             res.send(error);
             return;
         } else {
-            res.send(req.session);
-            // res.redirect('/listarMateriasLecionadas/' + result[0].id_professor);
-            return;
+            conversaModel.deleteChat(id_conversa, function(error, result) { 
+                if (error) {
+                    res.send(error);
+                    return;
+                } else {
+                    res.redirect('/listarMateriasLecionadas/' + req.session.dadosProfessor.professor.id_professor);
+                    return;
+                } 
+            });
         } 
     });
 }
