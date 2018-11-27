@@ -31,8 +31,13 @@ module.exports = function(app) {
             res.render('erro/autorizacao');
         }
     });
-
+    
     app.get("/getSessionData", function(req, res){
         res.send({ data:req.session});
-  });
+    });
+
+    app.get("/sair", function(req, res){
+        req.session.alunoAutorizado = false;
+        res.redirect('/');
+    });
 }

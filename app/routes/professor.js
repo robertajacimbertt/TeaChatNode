@@ -22,6 +22,11 @@ module.exports = function(app) {
             res.render('erro/autorizacao');
         }
     });
+
+    app.get("/sairProfessor", function(req, res){
+        req.session.professorAutorizado = false;
+        res.redirect('/');
+    });
 }
 
 // precisa adicionar as materias que o professor da aula
