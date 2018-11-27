@@ -20,6 +20,7 @@
                 <div class = "notification2">
                     <span><%= chat.nomeAluno %></span>
                     <a href="/chatProfessor/<%= chat.id_conversa %>"> <br>Chat -> </a> <br>
+                    <a href="/chat/delete/<%= chat.id_conversa %>" class="botao-deletar">x</a>
                 </div>
             </div>  
         <% } %>

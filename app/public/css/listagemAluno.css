@@ -214,3 +214,10 @@ h2{
     color: #363636;
     float: right;
 }
+
+.botao-deletar{
+  text-decoration: none;
+  color: darkred;
+  float: right;
+  padding-top: 20px;
+}

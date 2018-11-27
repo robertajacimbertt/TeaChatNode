@@ -27,6 +27,11 @@ ConversaDAO.prototype.selectChatsComAlunos = function(conversa, callback) {
     this._conn.query(sql, callback);
 }
 
+ConversaDAO.prototype.deleteChat = function(id_conversa, callback) { 
+    let sql = "delete from conversas where id_conversa = " + id_conversa + ";";
+    this._conn.query(sql, callback);
+}
+
 module.exports = function() {
     return ConversaDAO;
 }

@@ -16,4 +16,8 @@ module.exports = function(app) {
     app.get('/buscarChats/:id_materia', function(req, res) {
         app.app.controllers.conversa.buscarChatsComAlunos(app, req, res);
     });
+
+    app.get('/chat/delete/:id_conversa', function(req, res){
+        app.app.controllers.conversa.apagarChat(app, req, res);
+    });
 }

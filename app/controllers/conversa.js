@@ -106,8 +106,24 @@ module.exports.buscarChatsComAlunos = function(app, req, res) {
             }
         });
     } else {
-        console.log("lugar1");
         res.redirect('/listarMateriasLecionadas/' + id_professor);
         return;
     }
+} 
+
+module.exports.apagarChat = function(app, req, res) {
+    let id_conversa = req.params.id_conversa; 
+
+    let connection = app.config.dbConnection();
+    let conversaModel = new app.app.models.conversaDAO(connection);
+    conversaModel.deleteChat(id_conversa, function(error, result) { 
+        if (error) {
+            res.send(error);
+            return;
+        } else {
+            res.send(req.session);
+            // res.redirect('/listarMateriasLecionadas/' + result[0].id_professor);
+            return;
+        } 
+    });
 }
