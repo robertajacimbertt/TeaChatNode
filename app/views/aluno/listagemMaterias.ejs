@@ -5,11 +5,24 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/css/listagemAluno.css" rel="stylesheet"> 
+
     </head>
     <body>
-        <% for (materia of materias) { %>
-            <span><%= materia.nome %></span>
-            <a href="/buscarProfessoresDisponiveis/<%= materia.id_materia %>"> Escolher -> </a> <br>
-        <% } %>
+        <a href = "/" class = "button-is-large"> Sair </a>
+        <section class="hero">
+            <h1> Disciplinas disponíveis </h1>
+            <h2> Escolha uma disciplina para ver professores disponíveis! </h2>
+        </section>
+
+        <div class = "disciplinas">
+            <% for (materia of materias) { %>
+                <div class = "container">
+                    <div class = "notification">
+                        <span><%= materia.nome %></span>
+                        <a href="/buscarProfessoresDisponiveis/<%= materia.id_materia %>"><br> Escolher -> </a> <br>
+                    </div>
+                </div>
+            <% } %>
+        </div>
     </body>
 </html>

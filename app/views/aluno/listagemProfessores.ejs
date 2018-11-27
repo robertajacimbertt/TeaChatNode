@@ -1,16 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="/css/listagemAluno.css" rel="stylesheet"> 
     </head>
     <body>
+        <a href = "/" class = "button-is-large"> Sair </a>
         <% for (professor of professoresDisponiveis) { %>
-            <span><%= professor.nomeProfessor %></span>
-            <span><%= professor.id_professor %></span>
-            <a href="/chatAluno/<%= professor.id_professor %>"> Chat -> </a> <br>
+            <div class = "container2">
+                <div class = "notification2">
+                    <span><%= professor.nomeProfessor %></span>
+                    <span><%= professor.id_professor %></span>
+                    <a href="/chatAluno/<%= professor.id_professor %>"><br> Chat -> </a> <br>
+                </div>
+            </div>
         <% } %>
     </body>
 </html>

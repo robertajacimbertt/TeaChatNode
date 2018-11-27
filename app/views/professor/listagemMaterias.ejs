@@ -7,10 +7,21 @@
         <link href="/css/listagemAluno.css" rel="stylesheet"> 
     </head>
     <body>
-        <% for (materia of materias) { %>
-            <span><%= materia.nomeMateria %></span>
-            <a href="/buscarChats/<%= materia.id_materia %>"> Escolher -> </a> <br>
-        <% } %>
-    </body>
+        <a href = "/" class = "button-is-large"> Sair </a>
+        <section class="hero">
+            <h1> Disciplinas disponíveis </h1>
+            <h2> Escolha uma disciplina para ver os seus chats disponíveis! </h2>
+        </section>
+        <div class = "disciplinas">
+            <% for (materia of materias) { %>
+                <div class = "container">
+                    <div class = "notification">
+                        <span><%= materia.nomeMateria %></span>
+                        <a href="/buscarChats/<%= materia.id_materia %>"> <br>Escolher -> </a> <br>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+            </body>
     <!-- selecionar todos as conversas daquele id_professor e aquela id_materia -->
 </html>

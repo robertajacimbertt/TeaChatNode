@@ -1,15 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="/css/listagemAluno.css" rel="stylesheet"> 
     </head>
     <body>
+
+        <section class="hero">
+            <a href = "/" class = "button-is-large"> Sair </a>
+            <h1> Conversas com alunos </h1>
+            <h2> Estas são as suas conversas: </h2>
+        </section>
+
         <% for (chat of chats) { %>
-            <span><%= chat.nomeAluno %></span>
-            <a href="/chatProfessor/<%= chat.id_conversa %>"> Chat -> </a> <br>
+            <div class = "container2">
+                <div class = "notification2">
+                    <span><%= chat.nomeAluno %></span>
+                    <a href="/chatProfessor/<%= chat.id_conversa %>"> <br>Chat -> </a> <br>
+                </div>
+            </div>  
         <% } %>
+
     </body>
 </html>

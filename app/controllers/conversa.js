@@ -101,7 +101,7 @@ module.exports.buscarChatsComAlunos = function(app, req, res) {
                 return;
             }  else { // nao tem chat na materia
                 req.session.alunosComChat = result;
-                res.render('professor/semMateria', {id_professor: id_professor});
+                res.render('professor/semChat', {id_professor: id_professor});
                 return;
             }
         });
