@@ -80,25 +80,34 @@ module.exports.inserirNovaMensagem = function(app, req, res) { // id conversa, m
 }
 
 module.exports.buscarChatsComAlunos = function(app, req, res) {
+    console.log(req.session);
     let id_materia = req.params.id_materia; 
     let id_professor = req.session.dadosProfessor.professor.id_professor;
     let conversa = {id_materia: Number(id_materia), id_professor: Number(id_professor)};
-    // let erros = req.validationErrors();
-    // if (erros) {
-    //     res.send(erros);
-    //     return;
-    // }
-    req.session.materiaSelecionada = id_materia;
-    let connection = app.config.dbConnection();
-    let conversaModel = new app.app.models.conversaDAO(connection);
-    conversaModel.selectChatsComAlunos(conversa, function(error, result) { 
-        if (error) {
-            res.send(error);
-            return;
-        } else {
-            req.session.alunosComChat = result;
-            res.render('professor/listagemChats', { chats:result });
-            return;
-        } 
-    });
+   req.session.materiaSelecionada = id_materia;
+        let connection = app.config.dbConnection();
+        let conversaModel = new app.app.models.conversaDAO(connection);
+    if( id_materia &&  id_professor && conversa ){
+        
+        conversaModel.selectChatsComAlunos(conversa, function(error, result) { 
+            console.log(error, result);
+            if (error) {
+                console.log("lugar2");
+                res.redirect('/listarMateriasLecionadas/' + id_professor);
+                return;
+            } else  if ( result.length > 0 ){
+                req.session.alunosComChat = result;
+                res.render('professor/listagemChats', { chats:result });
+                return;
+            }  else { // nao tem chat na materia
+                req.session.alunosComChat = result;
+                res.render('professor/semMateria', {id_professor: id_professor});
+                return;
+            }
+        });
+    } else {
+        console.log("lugar1");
+        res.redirect('/listarMateriasLecionadas/' + id_professor);
+        return;
+    }
 }

@@ -1,0 +1,16 @@
+.div-erro{
+    max-width: 100%;
+    background-color: #ff3860;
+    color: white;
+    padding: 5%;
+    align-content: center;
+    align-self: center;
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+    border: solid white 1px;
+    padding: 10px;
+    color: white;
+}

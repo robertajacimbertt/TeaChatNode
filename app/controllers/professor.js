@@ -1,13 +1,5 @@
 module.exports.professorAutenticar = function(app, req, res) {
     let professor = req.body;
-    // req.assert("email", "Email é obrigatório").notEmpty();
-    // req.assert("senha", "Senha é obrigatório").notEmpty();
-
-    let erros = req.validationErrors();
-    if (erros) {
-        res.render('home/index', { erros: erros , materias: []});
-        return;
-    }
 
     let connection = app.config.dbConnection();
     let professorModel = new app.app.models.professorDAO(connection);
@@ -17,10 +9,8 @@ module.exports.professorAutenticar = function(app, req, res) {
             return;
         } else if (result.length > 0) {
             req.session.professorAutorizado = true;
-            // req.session.idAluno = result[0].id_aluno;
-            req.session.dadosProfessor =  { erros: erros, professor: result[0] };
+            req.session.dadosProfessor =  { erros: error, professor: result[0] };
             res.redirect('/listarMateriasLecionadas/' + result[0].id_professor);
-            // res.render('chat/chatAluno', { erros: erros, aluno: aluno });
             return;
         } else {
             res.send("Usuario ou senha inexistente");
@@ -30,16 +20,11 @@ module.exports.professorAutenticar = function(app, req, res) {
 }
 
 module.exports.professorCadastrar = function (app, req, res) {
-    let professor = req.body;
-    // req.assert("nome", "Nome é obrigatório").notEmpty();
-    // req.assert("email", "Usuário é obrigatório").notEmpty();
-    // req.assert("senha", "Senha é obrigatório").notEmpty();
-
-    var erros = req.validationErrors();
-    if (erros) {
-        res.render('home/index', { erros: erros, professor: professor });
-        return;
-    }
+    let professor = { 
+        nome: req.body.nome,
+        email: req.body.email,
+        senha: req.body.senha, 
+    }; 
 
     let connection = app.config.dbConnection();
     let professorModel = new app.app.models.professorDAO(connection);
@@ -50,9 +35,21 @@ module.exports.professorCadastrar = function (app, req, res) {
             return;
         } else  {
             req.session.professorAutorizado = true;
-            req.session.dadosProfessor =  { erros: erros, professor: professor };
-            res.redirect('/listarMateriasLecionadas');
-            return;
+            req.session.dadosProfessor =  { erros: error, professor: professor };
+                let professorMaterias = {
+                    materias: req.body.materia,
+                    id_professor: result[0].id_professor,
+                };
+                professorModel.storeMateriasProfessor(professorMaterias, function(error, result) {
+                    console.log(error, result);
+                    if (error) {
+                        res.redirect('/');
+                        return;
+                     } else {
+                        res.redirect('/listarMateriasLecionadas/' + Number(professorMaterias.id_professor));
+                         return;
+                     }  
+                 });             
         }
     });           
 }
@@ -94,13 +91,17 @@ module.exports.listarMateriasLecionadas = function (app, req, res) {
 	materiasModel.listarMateriasLecionadas(id_professor, function(error, result){
 		if(error){
             res.render('home/index', { erro: error, estudantes:[] });
+            return;
         }
-		res.render('professor/listagemMaterias', {materias:result});
+        console.log(result, "Resultado em controller");
+        res.render('professor/listagemMaterias', {materias:result});
+        return;
 	});
 	
 }
 
 module.exports.createChat = function (app, req, res) {
+    console.log(req.params.id_conversa, '< --');
     let chatAlunoSelecionado = req.session.alunosComChat.find(item => item.id_conversa === Number(req.params.id_conversa));
     req.session.dadosDoChatAlunoSelecionado = chatAlunoSelecionado;
     res.render('professor/chatProfessor', {sessao:req.session});
